@@ -1,7 +1,7 @@
 import cv2
 
 # Load the pre-trained Haar Cascade classifier for face detection
-face_cascade = cv2.CascadeClassifier('haarcascades/haarcascade_frontalface_default.xml')
+face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
 
 # Initialize the webcam
 cap = cv2.VideoCapture(0)
@@ -44,12 +44,14 @@ if len(face_rects) > 0:
         # Back-projection to get the probability distribution
         dst = cv2.calcBackProject([hsv], [0], roi_hist, [0, 180], 1)
 
+        ##########################################################
         # Apply mean shift to get the new location
         ret, track_window = cv2.meanShift(dst, track_window, term_crit)
 
         # Draw the tracked window on the frame
         x, y, w, h = track_window
         img2 = cv2.rectangle(frame, (x, y), (x+w, y+h), 255, 2)
+        ##########################################################
 
         # Display the result
         cv2.imshow('Mean Shift Tracking', img2)
